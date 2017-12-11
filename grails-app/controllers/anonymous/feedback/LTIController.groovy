@@ -11,11 +11,10 @@ class LTIController {
         log.debug("Query String: " + request.getQueryString())
         log.debug("HTTP Method: " + request.getMethod())
         for (header in request.getHeaderNames()) {
-            log.debug("${header}:${request.getHeader(header)}")
+            log.info("${header}:${request.getHeader(header)}")
         }
         for (param in request.getParameterMap()) {
-            log.debug("${param.key}:${param.value}")
-            //println "${param.key}:${param.value}"
+            log.info("${param.key}:${param.value}")
         }
 
         // Authenticate initial LTI Request and store request params
@@ -24,8 +23,10 @@ class LTIController {
             def ltiSecret = grailsApplication.config.getProperty('canvas.ltiSecret')
             LtiVerificationResult ltiResult = ltiVerifier.verify(request, ltiSecret)
             if (ltiResult.success) {
+                //save session parameters
+                session["courseId"] = params.custom_canvas_course_id
+                session["sectionIds"] = params.custom_section_ids
                 def roles = params.custom_membership_roles as String
-                println roles
                 def roleList = roles.split(',')
                 if(roleList.contains('Instructor')){
                     redirect(controller: 'instructor', action: 'index', absolute: true)

@@ -12,8 +12,7 @@
 </head>
 
 <body>
-    <div class="jumbotron">
-        <h1>Instructor View</h1>
-    </div>
+
+
 </body>
 </html>
