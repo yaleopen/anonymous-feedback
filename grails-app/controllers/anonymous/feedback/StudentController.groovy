@@ -2,9 +2,7 @@ package anonymous.feedback
 
 class StudentController {
 
-    def index(){
-
-    }
+    def index(){ }
 
     def save(Feedback feedback){
         if(feedback.hasErrors()){
