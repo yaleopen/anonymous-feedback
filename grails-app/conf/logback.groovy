@@ -32,6 +32,5 @@ if (Environment.isDevelopmentMode() && targetDir != null) {
         }
     }
     logger("StackTrace", ERROR, ['FULL_STACKTRACE'], false)
-    logger('grails.app', DEBUG, ['STDOUT'], false)
 }
-root(DEBUG, ['STDOUT'])
+root(INFO, ['STDOUT'])
