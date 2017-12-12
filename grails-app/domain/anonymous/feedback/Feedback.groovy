@@ -1,5 +1,8 @@
 package anonymous.feedback
 
+import grails.rest.Resource
+
+@Resource(uri='/comments')
 class Feedback {
 
     String courseId
@@ -14,5 +17,6 @@ class Feedback {
     static mapping = {
         message type: 'text'
         version false
+        sort dateCreated: "desc"
     }
 }
