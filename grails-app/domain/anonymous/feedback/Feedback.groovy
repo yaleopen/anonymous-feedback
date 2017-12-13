@@ -16,6 +16,7 @@ class Feedback {
 
     static mapping = {
         message type: 'text'
+        sectionId type: 'text'
         version false
         sort dateCreated: "desc"
     }

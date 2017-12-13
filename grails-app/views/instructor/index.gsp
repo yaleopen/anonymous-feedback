@@ -26,7 +26,7 @@
         <tbody>
             <g:each var="feedback" in="${feedbackList}">
                 <tr id="feedbackRow_${feedback.id}" class="${feedback.isRead ? 'table-secondary' : ''}">
-                    <td></td>
+                    <td style="text-align: center;"><input id="feedbackCheckBox_${feedback.id}" class="form-check-input position-relative m-0" style="vertical-align: middle" type="checkbox" value="${feedback.id}" aria-label="..."></td>
                     <td>
                         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#feedbackModal_${feedback.id}" data-backdrop="static">
                             <span class="d-inline-block text-truncate" style="max-width: 600px;">
@@ -58,6 +58,11 @@
             </g:each>
         </tbody>
     </table>
+    <div class="row mt-3">
+        <div class="col ml-3">
+            <button id="markAsReadButton" type="button" class="btn btn-primary">Mark Selected as Read</button>
+        </div>
+    </div>
 
 </body>
 </html>
