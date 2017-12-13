@@ -12,8 +12,8 @@
 </head>
 
 <body>
-    <div class="jumbotron">
-        <h1>Invalid Role</h1>
+    <div class="alert alert-danger" role="alert">
+        Due to your enrollment, you do not have access to this tool. If you think this is an error, please contact your instructor.
     </div>
 </body>
 </html>

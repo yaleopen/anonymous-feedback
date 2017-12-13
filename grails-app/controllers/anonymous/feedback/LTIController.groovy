@@ -26,6 +26,7 @@ class LTIController {
                 //save session parameters
                 session["courseId"] = params.custom_canvas_course_id
                 session["sectionIds"] = params.custom_section_ids
+                session["contextTitle"] = params.context_title
                 def roles = params.custom_membership_roles as String
                 def roleList = roles.split(',')
                 if(roleList.contains('Instructor')){

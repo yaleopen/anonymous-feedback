@@ -6,7 +6,16 @@ class InstructorController {
 
     def index() {
         String courseId = session.courseId
-        [feedbackList: Feedback.findAllByCourseId(courseId)]
+        String contextTitle = session.contextTitle
+        def feedbackList = Feedback.findAllByCourseId(courseId)
+        if(contextTitle.endsWith('.UMB')){
+            String sectionIds = session.sectionIds
+            def sectionIdList = sectionIds.split(',') as List
+            feedbackList.retainAll{feedback->
+                sectionIdList.intersect(feedback.sectionId.split(',') as List).size() > 0
+            }
+        }
+        [feedbackList: feedbackList]
     }
 
     def updateFeedbackAsRead(){
