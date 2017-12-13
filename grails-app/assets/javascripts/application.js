@@ -20,18 +20,7 @@ $(document).ready(function() {
                     columns: [ 1, 3 ]
                 }
             }
-        ],
-        // select: {
-        //     style:    'multi',
-        //     selector: 'td:first-child'
-        // },
-        // columnDefs: [
-        //     {
-        //         orderable: false,
-        //         className: 'select-checkbox',
-        //         targets:   0
-        //     }
-        // ]
+        ]
     } );
 
     instructorFeedbackTable.buttons().container().appendTo( '#instructorFeedbackTable_wrapper .col-md-6:eq(0)' );
