@@ -25,14 +25,18 @@
     <form action="/feedback/student/save" method="post">
         <g:hiddenField name="courseId" value="${session.courseId}"/>
         <g:hiddenField name="sectionId" value="${session.sectionIds}"/>
+        <g:hiddenField name="subaccountName" value="${session.subaccountName}"/>
         <g:hiddenField name="isRead" value="false"/>
         <div class="form-group">
             <label for="feedbackTextArea">Your comment</label>
-            <textarea class="form-control" id="feedbackTextArea" name="message" rows="3" maxlength="1000"></textarea>
+            <textarea class="form-control" id="feedbackTextArea" name="message" rows="3"></textarea>
         </div>
         <div class="row">
-            <div class="col">
-                <button type="submit" class="btn btn-primary">Submit</button>
+            <div class="col-11">
+                <button id="feedbackSubmitButton" type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="col-1">
+                <span id="characterCountBadge" class="badge badge-pill badge-success">1000</span>
             </div>
         </div>
     </form>

@@ -27,18 +27,19 @@ class LTIController {
                 session["courseId"] = params.custom_canvas_course_id
                 session["sectionIds"] = params.custom_section_ids
                 session["contextTitle"] = params.context_title
+                session["subaccountName"] = params.custom_subaccount_name
                 def roles = params.custom_membership_roles as String
                 def roleList = roles.split(',')
                 if(roleList.contains('Instructor')){
                     redirect(controller: 'instructor', action: 'index', absolute: true)
                 }
                 else if(roleList.contains('StudentEnrollment') || roleList.contains('Shopper') || roleList.contains('Auditor')){
-                    redirect(controller: 'student', action: 'index', absolute: true)
+                    def enrollmentStatus = params.custom_canvas_enrollment_state
+                    if(enrollmentStatus == 'active'){
+                        redirect(controller: 'student', action: 'index', absolute: true)
+                    }
                 }
-                else{
-                    render(view: 'error')
-                }
-
+                render(view: 'error')
             } else {
                 log.error("LTI Result not SUCCESS: " + ltiResult.getMessage())
                 respond ltiResult

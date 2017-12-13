@@ -70,3 +70,22 @@ $("#markAsReadButton").click(function(){
         });
     });
 });
+
+var text_max = 1000;
+$("#feedbackTextArea").keyup(function(){
+    var text_length = $(this).val().length;
+    var text_remaining = text_max - text_length;
+    var characterCountBadge = $('#characterCountBadge');
+    var feedbackSubmitButton = $('#feedbackSubmitButton');
+    characterCountBadge.html(text_remaining);
+    if(text_remaining <= 0){
+        characterCountBadge.toggleClass("badge-danger",true);
+        characterCountBadge.toggleClass("badge-success",false);
+        feedbackSubmitButton.prop('disabled',true);
+    }
+    else{
+        characterCountBadge.toggleClass("badge-danger",false);
+        characterCountBadge.toggleClass("badge-success",true);
+        feedbackSubmitButton.prop('disabled',false);
+    }
+});

@@ -10,6 +10,7 @@ class Feedback {
     Date dateCreated
     Boolean isRead
     String message
+    String subaccountName
 
     static constraints = {
     }
