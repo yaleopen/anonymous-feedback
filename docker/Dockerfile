@@ -23,8 +23,6 @@ ENV GRAILS_HOME /usr/lib/java/grails
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 ENV PATH $GRAILS_HOME/bin:$PATH
 
-ENV GRAILS_OPTS '-Xms256m -Xmx512m'
-
 RUN mkdir /app
 COPY . /app
 WORKDIR /app
