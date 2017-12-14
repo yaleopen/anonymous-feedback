@@ -34,7 +34,7 @@ server:
 
 ---
 grails:
-    serverURL: ${public_url}/signup
+    serverURL: ${public_url}/feedback
     mime:
         disable:
             accept:
