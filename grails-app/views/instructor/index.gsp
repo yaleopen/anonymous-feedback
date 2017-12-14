@@ -35,7 +35,7 @@
                         </button>
                     </td>
                     <td id="feedbackStatus_${feedback.id}">${feedback.isRead ? 'Read' : 'Unread'}</td>
-                    <td><g:formatDate date="${feedback.dateCreated}" type="datetime" style="MEDIUM" timeStyle="LONG"/></td>
+                    <td><g:formatDate format="MMM d, yyyy h:mm a z" date="${feedback.dateCreated}" timeZone="EST"/></td>
                 </tr>
                 <div id="feedbackModal_${feedback.id}" class="modal fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
