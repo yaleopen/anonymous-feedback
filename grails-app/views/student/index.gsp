@@ -26,6 +26,7 @@
         <g:hiddenField name="courseId" value="${session.courseId}"/>
         <g:hiddenField name="sectionId" value="${session.sectionIds}"/>
         <g:hiddenField name="subaccountName" value="${session.subaccountName}"/>
+        <g:hiddenField name="courseName" value="${session.courseName}"/>
         <g:hiddenField name="isRead" value="false"/>
         <div class="form-group">
             <label for="feedbackTextArea">Your comment</label>

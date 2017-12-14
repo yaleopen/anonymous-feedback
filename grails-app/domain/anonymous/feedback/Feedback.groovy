@@ -11,6 +11,7 @@ class Feedback {
     Boolean isRead
     String message
     String subaccountName
+    String courseName
 
     static constraints = {
     }

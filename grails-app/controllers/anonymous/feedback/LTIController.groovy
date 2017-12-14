@@ -28,6 +28,8 @@ class LTIController {
                 session["sectionIds"] = params.custom_section_ids
                 session["contextTitle"] = params.context_title
                 session["subaccountName"] = params.custom_subaccount_name
+                session["courseName"] = params.custom_course_name
+                session["isAdmin"] = params.custom_isrootaccountadmin
                 def roles = params.custom_membership_roles as String
                 def roleList = roles.split(',')
                 if(roleList.contains('Instructor')){

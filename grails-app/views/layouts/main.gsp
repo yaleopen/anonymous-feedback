@@ -23,6 +23,9 @@
         <div class="container">
             <h1 class="display-4">Anonymous Feedback</h1>
             <p class="lead">Post course feedback anonymously</p>
+            <g:if test="${session.isAdmin == 'true'}">
+                <a class="btn btn-primary" href="${createLink(controller: 'instructor', action: 'downloadFeedbackStats')}" role="button">Download Stats Report</a>
+            </g:if>
         </div>
     </div>
 
