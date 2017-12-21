@@ -12,6 +12,7 @@ class Feedback {
     String message
     String subaccountName
     String courseName
+    String termCode
 
     static constraints = {
     }
