@@ -9,3 +9,7 @@
 *
 *= require_self
 */
+
+.modal-body p {
+    word-wrap: break-word;
+}

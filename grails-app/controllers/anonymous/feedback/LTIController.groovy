@@ -5,6 +5,8 @@ import org.imsglobal.lti.launch.LtiVerifier
 
 class LTIController {
 
+    def enrollmentTermService
+
     def launch() {
         // Log incoming request
         log.debug("Request URL: " + request.getRequestURL().toString())
@@ -37,6 +39,8 @@ class LTIController {
                 }
                 else if(roleList.contains('StudentEnrollment') || roleList.contains('Shopper') || roleList.contains('Auditor')){
                     def enrollmentStatus = params.custom_canvas_enrollment_state
+                    String termStartDate = params.custom_termstartat.split()[0]
+                    session["termCode"] = enrollmentTermService.getEnrollmentTermByStartDate(termStartDate).sis_term_id
                     if(enrollmentStatus == 'active'){
                         redirect(controller: 'student', action: 'index', absolute: true)
                     }

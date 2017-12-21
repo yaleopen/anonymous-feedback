@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <g:hiddenField id="courseName" name="courseName" value="${session.courseName}"/>
     <table id="instructorFeedbackTable" class="table table-bordered" width="100%" cellspacing="0">
         <thead class="thead-dark">
             <tr>

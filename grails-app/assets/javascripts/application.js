@@ -15,9 +15,15 @@ $(document).ready(function() {
             {
                 extend: 'csvHtml5',
                 text: 'Download CSV',
-                title: 'feedback-export',
+                title: 'Student Feedback for ' + $("#courseName").val(),
                 exportOptions: {
-                    columns: [ 1, 3 ]
+                    columns: [ 3, 1 ]
+                },
+                customize: function (csv) {
+                    var csvRows = csv.split('\n');
+                    csvRows[0] = csvRows[0].replace('"Date Posted"', '"date/time"');
+                    csvRows[0] = csvRows[0].replace('"Comment"', '"message"');
+                    return csvRows.join('\n');
                 }
             }
         ]
@@ -78,7 +84,7 @@ $("#feedbackTextArea").keyup(function(){
     var characterCountBadge = $('#characterCountBadge');
     var feedbackSubmitButton = $('#feedbackSubmitButton');
     characterCountBadge.html(text_remaining);
-    if(text_remaining <= 0){
+    if(text_remaining < 0){
         characterCountBadge.toggleClass("badge-danger",true);
         characterCountBadge.toggleClass("badge-success",false);
         feedbackSubmitButton.prop('disabled',true);

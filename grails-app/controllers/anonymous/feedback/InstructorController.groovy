@@ -6,20 +6,16 @@ class InstructorController {
 
     def index() {
         String courseId = session.courseId
-        String contextTitle = session.contextTitle
         def feedbackList = Feedback.findAllByCourseId(courseId)
-        if(contextTitle.endsWith('.UMB')){
-            String sectionIds = session.sectionIds
-            def sectionIdList = sectionIds.split(',') as List
-            feedbackList.retainAll{feedback->
-                sectionIdList.intersect(feedback.sectionId.split(',') as List).size() > 0
-            }
+        String sectionIds = session.sectionIds
+        def sectionIdList = sectionIds.split(',') as List
+        feedbackList.retainAll{feedback->
+            sectionIdList.intersect(feedback.sectionId.split(',') as List).size() > 0
         }
         [feedbackList: feedbackList]
     }
 
     def updateFeedbackAsRead(){
-        String courseId = session.courseId
         def feedback = Feedback.get(params.id as Long)
         feedback.isRead = true
         def updatedFeedback = feedback.save(flush:true)
@@ -32,16 +28,26 @@ class InstructorController {
                 distinct("courseId")
             }
         }
-        def headers = ['Course Name', 'SubAccount Name', 'Course Id', 'Feedback Count']
+        def headers = ['Term Code', 'Course Name', 'SubAccount Name', 'Course Id', 'Section Id', 'Feedback Count']
         response.setContentType("text/csv")
-        response.setHeader("Content-disposition", "filename=\"feedback-stats.csv\"")
+        response.setHeader("Content-disposition", "filename=\"feedback-stats-${new Date().format('yyyy-MM-dd-HHmm', TimeZone.getTimeZone('EST'))}.csv\"")
         def outs = response.outputStream
         outs << headers.join(',') + '\n'
         courseIds.each{courseId->
             def feedbackByCourse = Feedback.findAllByCourseId(courseId as String)
+            Map sectionIdCount = [:]
+            feedbackByCourse.sectionId.each{sectionIdArr->
+                sectionIdArr.tokenize(',').each{sectionId->
+                    println sectionId
+                    def count = sectionIdCount.get(sectionId) ? ++sectionIdCount.get(sectionId) : 1
+                    sectionIdCount.put(sectionId,count)
+                }
+            }
             def commonFeedback = feedbackByCourse.get(0)
-            def row = [commonFeedback.courseName, commonFeedback.subaccountName, commonFeedback.courseId, feedbackByCourse.size()]
-            outs << row.join(',') + '\n'
+            sectionIdCount.each{sectionId,feedbackCount->
+                def row = [commonFeedback.termCode, commonFeedback.courseName, commonFeedback.subaccountName, commonFeedback.courseId, sectionId, feedbackCount]
+                outs << row.join(',') + '\n'
+            }
         }
         outs.flush()
         outs.close()
