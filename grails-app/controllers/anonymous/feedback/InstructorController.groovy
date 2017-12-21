@@ -38,12 +38,11 @@ class InstructorController {
             Map sectionIdCount = [:]
             feedbackByCourse.sectionId.each{sectionIdArr->
                 sectionIdArr.tokenize(',').each{sectionId->
-                    println sectionId
                     def count = sectionIdCount.get(sectionId) ? ++sectionIdCount.get(sectionId) : 1
                     sectionIdCount.put(sectionId,count)
                 }
             }
-            def commonFeedback = feedbackByCourse.get(0)
+            def commonFeedback = feedbackByCourse.find{it.termCode && it.courseName && it.subaccountName && it.courseId}
             sectionIdCount.each{sectionId,feedbackCount->
                 def row = [commonFeedback.termCode, commonFeedback.courseName, commonFeedback.subaccountName, commonFeedback.courseId, sectionId, feedbackCount]
                 outs << row.join(',') + '\n'
