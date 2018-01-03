@@ -11,6 +11,18 @@ grails:
             # Whether to translate GORM events into Reactor events
             # Disabled by default for performance reasons
             events: false
+    mail:
+        host: 'mail.yale.edu'
+        port: 25
+        overrideAddress:
+        disabled: false
+        smtp:
+            connectiontimeout: 5000
+            timeout: 3000
+            writetimeout: 5000
+        default:
+            from: 'Canvas Anonymous Feedback<no-reply@canvas.yale.edu>'
+            replyTo: 'no-reply@canvas.yale.edu'
 info:
     app:
         name: '@info.app.name@'
@@ -89,6 +101,40 @@ endpoints:
     jmx:
         unique-names: true
 
+quartz:
+    autoStartup: true
+    jdbcStore: true
+    waitForJobsToCompleteOnShutdown: true
+
+    scheduler:
+        instanceName: 'FeedbackScheduler'
+        instanceId: 'AUTO'
+        skipUpdateCheck: true        # get rid of annoying message on startup
+
+    threadPool.class: 'org.quartz.simpl.SimpleThreadPool'
+    threadPool:
+        threadCount: 5               # Quartz max threads (jobs) at the same time
+        threadPriority: 5            # Thread.MIN_PRIORITY level
+
+    # handles its own transactions with the database
+    jobStore.class: 'org.quartz.impl.jdbcjobstore.JobStoreTX'
+    jobStore:
+        misfireThreshold: 60000
+        driverDelegateClass: 'org.quartz.impl.jdbcjobstore.StdJDBCDelegate'
+        useProperties: false         # Properties passed to the job are NOT all String objects
+        tablePrefix: 'QRTZ_'         # Prefix for the Quartz tables in the database
+        isClustered: true            # Tell Quartz it is clustered
+        clusterCheckinInterval: 5000 # Check in with the cluster every 5000 ms
+
+    # Detect the jvm shutdown and call shutdown on the scheduler
+    plugin:
+      shutdownhook.cleanShutdown: true
+      shutdownhook.class: 'org.quartz.plugins.management.ShutdownHookPlugin'
+
+    # Log the history of triggers and jobs
+    triggerHistory.class: 'org.quartz.plugins.history.LoggingTriggerHistoryPlugin'
+    jobHistory.class: 'org.quartz.plugins.history.LoggingJobHistoryPlugin'
+
 ---
 hibernate:
     cache:
@@ -163,6 +209,8 @@ environments:
             oauthToken: ${canvas_api_key}
             canvasBaseUrl: ${canvas_url}
             ltiSecret: ${lti_secret}
+            feedbackExtID: ${feedbackExtID}
+            emailTermCode: ${emailTermCode}
         dataSource:
             dbCreate: update
             username: ${db_username}
