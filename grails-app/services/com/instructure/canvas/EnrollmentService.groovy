@@ -10,6 +10,9 @@ class EnrollmentService extends CanvasAPIBaseService {
         def resp = restClient.get("${canvasBaseURL}/api/v1/sections/${sectionId}/enrollments?role[]=${role}"){
             auth("Bearer ${oauthToken}")
         }
+        if(resp.status != 200){
+            return []
+        }
         JSONArray respArr = (JSONArray) resp.json
         List<Enrollment> resultList = new ArrayList<Enrollment>(respArr)
         processResponsePages(resp,resultList)
