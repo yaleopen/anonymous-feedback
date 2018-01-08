@@ -12,5 +12,7 @@ class UrlMappings {
         "/"(view:"/index")
         "500"(view:'/error')
         "404"(view:'/notFound')
+        "/term/$termCode"(controller: 'feedback', action: 'deleteByTerm', method: 'DELETE')
+        "/reset"(controller: 'feedback', action: 'deleteAll', method: 'DELETE')
     }
 }
