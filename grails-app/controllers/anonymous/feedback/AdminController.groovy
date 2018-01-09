@@ -1,6 +1,6 @@
 package anonymous.feedback
 
-class FeedbackController {
+class AdminController {
 
     def deleteByTerm() {
         String termCode = params.termCode
