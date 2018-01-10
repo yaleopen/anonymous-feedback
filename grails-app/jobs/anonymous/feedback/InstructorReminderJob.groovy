@@ -9,7 +9,7 @@ class InstructorReminderJob {
     GrailsApplication grailsApplication
 
     static triggers = {
-        cron name: 'FeedbackSchedule', cronExpression: "0 0 * * * ?"
+        cron name: 'FeedbackSchedule', cronExpression: "0 0 7 * * ?"
     }
 
     def execute() {
