@@ -209,8 +209,8 @@ environments:
             oauthToken: ${canvas_api_key}
             canvasBaseUrl: ${canvas_url}
             ltiSecret: ${lti_secret}
-            feedbackExtID: ${feedbackExtID}
             emailTermCode: ${emailTermCode}
+            hourCronParam: ${hourCronParam}
         dataSource:
             dbCreate: update
             username: ${db_username}
