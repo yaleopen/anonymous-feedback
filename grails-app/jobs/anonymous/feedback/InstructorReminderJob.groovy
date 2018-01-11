@@ -6,10 +6,12 @@ class InstructorReminderJob {
     def enrollmentService
     def usersService
     def mailService
+    def externalToolService
     GrailsApplication grailsApplication
 
     static triggers = {
-        cron name: 'FeedbackSchedule', cronExpression: "0 0 7 * * ?"
+        def hourCronParam = grailsApplication.config.getProperty('canvas.hourCronParam')
+        cron name: 'FeedbackSchedule', cronExpression: "0 0 ${hourCronParam} * * ?"
     }
 
     def execute() {
@@ -40,8 +42,11 @@ class InstructorReminderJob {
         //populate courseNames
         def unreadCourseIds = unreadSections.values() as Set
         def courseNames = [:]
+        def feedbackIds = [:]
         unreadCourseIds.each{courseId->
             courseNames.put(courseId,Feedback.findByCourseId(courseId as String).courseName)
+            def feedbackId = externalToolService.listExternalToolsForCourse(courseId as String, 'feedback').find{it.consumer_key = 'feedback'}
+            feedbackIds.put(courseId, feedbackId ? feedbackId.id : '')
         }
         Map<Long,List> instructorInfo = [:]
         def instructorEmails = [:]
@@ -63,15 +68,14 @@ class InstructorReminderJob {
             }
         }
         def canvasBaseUrl = grailsApplication.config.getProperty('canvas.canvasBaseUrl')
-        def feedbackExtID = grailsApplication.config.getProperty('canvas.feedbackExtID')
-        def feedbackURLTemplate = "${canvasBaseUrl}/courses/:courseId/external_tools/${feedbackExtID}"
+        def feedbackURLTemplate = "${canvasBaseUrl}/courses/:courseId/external_tools/:feedbackId"
         instructorEmails.each{userId,emailAddress->
             if(emailAddress){
                 println "sending reminder to ${emailAddress}"
                 mailService.sendMail {
                     to emailAddress
                     subject "New Anonymous Feedback"
-                    html view: "/emailTemplate", model: [courseIds: instructorInfo.get(userId), courseNames: courseNames, feedbackURLTemplate: feedbackURLTemplate]
+                    html view: "/emailTemplate", model: [courseIds: instructorInfo.get(userId), courseNames: courseNames, feedbackURLTemplate: feedbackURLTemplate, feedbackIds: feedbackIds]
                 }
             }
         }

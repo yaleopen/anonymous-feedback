@@ -113,7 +113,7 @@
                                                         <tbody>
                                                         <g:each var="courseId" in="${courseIds}">
                                                             <tr>
-                                                                <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="${feedbackURLTemplate.replace(':courseId',courseId)}" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">${courseNames.get(courseId)}</a> </td>
+                                                                <td style="font-family: sans-serif; font-size: 14px; vertical-align: top; background-color: #3498db; border-radius: 5px; text-align: center;"> <a href="${feedbackURLTemplate.replace(':courseId',courseId).replace(':feedbackId',feedbackIds.get(courseId) as String)}" style="display: inline-block; color: #ffffff; background-color: #3498db; border: solid 1px #3498db; border-radius: 5px; box-sizing: border-box; cursor: pointer; text-decoration: none; font-size: 14px; font-weight: bold; margin: 0; padding: 12px 25px; text-transform: capitalize;">${courseNames.get(courseId)}</a> </td>
                                                             </tr>
                                                         </g:each>
                                                         </tbody>

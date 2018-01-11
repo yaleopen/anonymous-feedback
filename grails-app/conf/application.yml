@@ -207,8 +207,8 @@ environments:
             oauthToken: ''
             canvasBaseUrl: 'https://yale.beta.instructure.com'
             ltiSecret: ''
-            feedbackExtID: '3271'
             emailTermCode: '201703'
+            hourCronParam: 12
         dataSource:
             dbCreate: update
             username: root
