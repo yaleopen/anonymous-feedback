@@ -2,7 +2,7 @@ package anonymous.feedback
 
 import grails.core.GrailsApplication
 
-class InstructorReminderJob {
+class InstructorOneTimeReminderJob {
     def enrollmentService
     def usersService
     def mailService
@@ -10,11 +10,10 @@ class InstructorReminderJob {
     GrailsApplication grailsApplication
 
     static triggers = {
-        def hourParam = grailsApplication.config.canvas.weeklyReminder.hourParam
-        def dayParam = grailsApplication.config.canvas.weeklyReminder.dayParam
-        def cronSchedule = "0 0 ${hourParam} ? * ${dayParam}"
-        cron name: 'FeedbackSchedule', cronExpression: cronSchedule
-        println "feedback-cronSchedule: ${cronSchedule}"
+        def hourParam = grailsApplication.config.canvas.dailyReminder.hourParam
+        def cronSchedule = "0 0 ${hourParam} * * ?"
+        cron name: 'FeedbackOneTimeSchedule', cronExpression: cronSchedule
+        println "feedbackOneTime-cronSchedule: ${cronSchedule}"
     }
 
     def execute() {
@@ -23,10 +22,12 @@ class InstructorReminderJob {
         //get all unread feedback
         def feedbackCriteria = Feedback.createCriteria()
         //unread feedback [[courseId,sectionIds]]
+        def now = new Date()
         def unreadFeedback = feedbackCriteria.list {
             and{
                 eq("isRead", false)
                 eq("termCode", emailTermCode)
+                between('dateCreated', now - 1, now)
             }
             projections {
                 distinct(['courseId', 'sectionId'])

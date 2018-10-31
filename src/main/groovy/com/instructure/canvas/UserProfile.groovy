@@ -15,4 +15,6 @@ class UserProfile {
     String avatar_url
     String time_zone
     String locale
+    def calendar
+    def lti_user_id
 }
