@@ -204,11 +204,15 @@ dataSource:
 environments:
     development:
         canvas:
-            oauthToken: ''
+            oauthToken: '${CANVAS_API_TOKEN}'
             canvasBaseUrl: 'https://yale.beta.instructure.com'
-            ltiSecret: ''
-            emailTermCode: '201703'
-            hourCronParam: 12
+            ltiSecret: '${ANONYMOUS_FEEDBACK_SECRET}'
+            emailTermCode: '201803'
+            weeklyReminder:
+                hourParam: 12
+                dayParam: 7
+            dailyReminder:
+                hourParam: 12
         dataSource:
             dbCreate: update
             username: root

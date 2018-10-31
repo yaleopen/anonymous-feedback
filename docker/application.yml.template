@@ -210,7 +210,11 @@ environments:
             canvasBaseUrl: ${canvas_url}
             ltiSecret: ${lti_secret}
             emailTermCode: ${emailTermCode}
-            hourCronParam: ${hourCronParam}
+            weeklyReminder:
+                hourParam: ${weekly_hourParam}
+                dayParam: ${weekly_dayParam}
+            dailyReminder:
+                hourParam: ${daily_hourParam}
         dataSource:
             dbCreate: update
             username: ${db_username}
