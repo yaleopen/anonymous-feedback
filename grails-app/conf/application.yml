@@ -12,7 +12,7 @@ grails:
             # Disabled by default for performance reasons
             events: false
     mail:
-        host: 'mail.yale.edu'
+        host: '${MAIL_HOST}'
         port: 25
         overrideAddress:
         disabled: false
@@ -21,8 +21,8 @@ grails:
             timeout: 3000
             writetimeout: 5000
         default:
-            from: 'Canvas Anonymous Feedback<no-reply@canvas.yale.edu>'
-            replyTo: 'no-reply@canvas.yale.edu'
+            from: '${MAIL_FROM_ADDRESS}'
+            replyTo: '${MAIL_REPLYTO_ADDRESS}'
 info:
     app:
         name: '@info.app.name@'
@@ -205,9 +205,11 @@ environments:
     development:
         canvas:
             oauthToken: '${CANVAS_API_TOKEN}'
-            canvasBaseUrl: 'https://yale.beta.instructure.com'
+            canvasBaseUrl: '${CANVAS_BASE_URL}'
             ltiSecret: '${ANONYMOUS_FEEDBACK_SECRET}'
-            emailTermCode: '201803'
+            #Enable instructor reminders for this term
+            emailTermCode: '${ANONYMOUS_FEEDBACK_EMAIL_TERM}'
+            #CRON schedule of reminder emails
             weeklyReminder:
                 hourParam: 12
                 dayParam: 7
@@ -215,6 +217,6 @@ environments:
                 hourParam: 12
         dataSource:
             dbCreate: update
-            username: root
-            password: abcd1234
-            url: jdbc:mysql://localhost:3306/anonymous-feedback
+            username: '${DB_USERNAME}'
+            password: '${DB_PASSWORD}'
+            url: jdbc:mysql://localhost:3306/anonymous-feedback?useSSL=false

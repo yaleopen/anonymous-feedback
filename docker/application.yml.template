@@ -12,7 +12,7 @@ grails:
             # Disabled by default for performance reasons
             events: false
     mail:
-        host: 'mail.yale.edu'
+        host: ${mail_host}
         port: 25
         overrideAddress:
         disabled: false
@@ -21,8 +21,8 @@ grails:
             timeout: 3000
             writetimeout: 5000
         default:
-            from: 'Canvas Anonymous Feedback<no-reply@canvas.yale.edu>'
-            replyTo: 'no-reply@canvas.yale.edu'
+            from: ${mail_from_address}
+            replyTo: ${mail_replyto_address}
 info:
     app:
         name: '@info.app.name@'

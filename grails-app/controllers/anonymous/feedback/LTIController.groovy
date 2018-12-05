@@ -32,6 +32,7 @@ class LTIController {
                 session["subaccountName"] = params.custom_subaccount_name
                 session["courseName"] = params.custom_course_name
                 session["isAdmin"] = params.custom_isrootaccountadmin
+                session["oauthSignature"] = params.oauth_signature
                 def roles = params.custom_membership_roles as String
                 def roleList = roles.split(',')
                 if(roleList.contains('Instructor')){
