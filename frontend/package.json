@@ -15,12 +15,12 @@
   },
   "keywords": [],
   "contributors": [
-    "Ismail Orabi <ismail.orabi@yale.edu> (https://git.yale.edu/iao4)",
-    "Aliza Knight <aliza.knight@yale.edu> (https://git.yale.edu/ak2746)"
+    "Ismail Orabi (https://github.com/iorabi)",
+    "Aliza Knight (https://github.com/RennKat)"
   ],
   "repository": {
     "type": "git",
-    "url": "git@git.yale.edu:LMS/anonymous-feedback.git"
+    "url": "git@github.com/yaleopen/anonymous-feedback.git"
   },
   "license": "ISC",
   "dependencies": {
