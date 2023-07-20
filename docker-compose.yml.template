@@ -41,9 +41,9 @@ services:
       BACKEND_URL: http://localhost:4000
       CANVAS_CLIENT_ID: #TODO: Update CANVAS_CLIENT_ID - generated from Canvas LTI 1.3 Developer Key
       CANVAS_CLIENT_SECRET: /run/secrets/canvas_client_secret
-      CANVAS_JWKS_URI: https://canvas.test.instructure.com/api/lti/security/jwks
+      CANVAS_JWKS_URI: https://sso.test.canvaslms.com/api/lti/security/jwks
       CANVAS_ISSUER_ID: https://canvas.test.instructure.com
-      CANVAS_AUTH_URI: https://canvas.test.instructure.com/api/lti/authorize_redirect
+      CANVAS_AUTH_URI: https://sso.test.canvaslms.com/api/lti/authorize_redirect
       APP_REDIRECT_URI: https://<NGROK_HOST>/api/auth/lti #TODO: Update <NGROK_HOST> after running: ngrok http 3000
       APP_SESSION_KEY: /run/secrets/app_session_key
       APP_JWT_SECRET: /run/secrets/app_jwt_secret
