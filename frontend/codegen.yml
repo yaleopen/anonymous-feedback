@@ -1,0 +1,11 @@
+overwrite: true
+schema: "../backend/src/schema.graphql"
+generates:
+  generated/apollo-components.tsx:
+    documents: graphql/**/*.{tsx,ts}
+    config:
+      withHooks: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"

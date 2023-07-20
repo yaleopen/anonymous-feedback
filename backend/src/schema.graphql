@@ -1,0 +1,40 @@
+scalar DateTime
+
+type Feedback {
+  id: Int!
+  courseName: String
+  message: String
+  "isRead is stored as a 1 or 0 bit, (an Int) but functions as a boolean"
+  isRead: Int
+  dateCreated: DateTime
+  courseId: String
+  subaccountName: String
+  termCode: String
+}
+
+input CreateFeedback {
+  courseName: String
+  message: String
+  "isRead is stored as a 1 or 0 bit, (an Int) but functions as a boolean"
+  isRead: Int
+  courseId: String
+  subaccountName: String
+  termCode: String
+}
+
+type MutationResponse {
+  "Indicates whether the update was successful"
+  success: Boolean!
+  "Human-readable message for the UI"
+  message: String!
+}
+
+type Query {
+  testQuery: Int
+  courseFeedback: [Feedback]!
+}
+
+type Mutation {
+  insertFeedback(feedback: CreateFeedback): MutationResponse!
+  setReadStatus(idList: [Int!]): MutationResponse!
+}

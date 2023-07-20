@@ -1,69 +1,76 @@
 # Anonymous Feedback for Canvas
+
 Collect course feedback anonymously. More info [here](http://help.canvas.yale.edu/m/55452/l/705131-anonymous-feedback-tool)
 
-## Dev Setup
-1. Install [Grails 3.3.2](https://grails.org/download.html#sdkman)
+## Dev Setup (Docker Compose)
 
-2. Create environment variables for `application.yml` properties
-    ```yaml
-    grails:
-        mail:
-            host: '${MAIL_HOST}'
-            default:
-                from: '${MAIL_FROM_ADDRESS}'
-                replyTo: '${MAIL_REPLYTO_ADDRESS}'
-    environments:
-        development:
-            canvas:
-                oauthToken: '${CANVAS_API_TOKEN}'
-                canvasBaseUrl: '${CANVAS_BASE_URL}'
-                ltiSecret: '${ANONYMOUS_FEEDBACK_SECRET}'
-                #Enable instructor reminders for this term
-                emailTermCode: '${ANONYMOUS_FEEDBACK_EMAIL_TERM}'
-            dataSource:
-                username: '${DB_USERNAME}'
-                password: '${DB_PASSWORD}'
-    ```
-    
-3. Build & Run: `grails run-app`
+1. Install [Docker Desktop](https://www.docker.com/get-started/)
 
-4. Install LTI in Canvas via XML Config
-    ```xml
-   <?xml version="1.0" encoding="UTF-8"?>
-   <cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/
-   imslticc_v1p0"
-       xmlns:blti = "http://www.imsglobal.org/xsd/imsbasiclti_v1p0"
-       xmlns:lticm ="http://www.imsglobal.org/xsd/imslticm_v1p0"
-       xmlns:lticp ="http://www.imsglobal.org/xsd/imslticp_v1p0"
-       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation = "http://www.imsglobal.org/xsd/imslticc_v1p0
-   http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd
-       http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://
-   www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0.xsd
-       http://www.imsglobal.org/xsd/imslticm_v1p0 http://
-   www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd
-       http://www.imsglobal.org/xsd/imslticp_v1p0 http://
-   www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
-       <blti:launch_url>https://<HOST>:8080/feedback/LTI/launch</blti:launch_url>
-       <blti:title>Anonymous Feedback</blti:title>
-       <blti:description>Tool for posting anonymous feedback</blti:description>
-       <blti:extensions platform="canvas.instructure.com">
-         <lticm:property name="privacy_level">public</lticm:property>
-         <lticm:options name="course_navigation">
-           <lticm:property name="default">disabled</lticm:property>
-           <lticm:property name="enabled">true</lticm:property>
-           <lticm:options name="custom_fields">
-               <lticm:property name="membership_roles">$Canvas.membership.roles</lticm:property>
-               <lticm:property name="section_ids">$Canvas.course.sectionIds</lticm:property>
-               <lticm:property name="subaccount_name">$Canvas.account.name</lticm:property>
-               <lticm:property name="course_name">$Canvas.course.name</lticm:property>
-               <lticm:property name="isrootaccountadmin">$Canvas.user.isRootAccountAdmin</lticm:property>
-               <lticm:property name="termstartat">$Canvas.term.startAt</lticm:property>
-           </lticm:options>
-         </lticm:options>
-       </blti:extensions>
-   </cartridge_basiclti_link>
-    ```
+2. Install [ngrok](https://ngrok.com/download) - Allows us to connect from Canvas to localhost via SSL
+
+   - Run ngrok to expose localhost:3000 via SSL: `ngrok http 3000`
+   - We will use the HTTPS URL when creating the Canvas Developer Key
+
+3. LTI 1.3 Authentication Setup
+
+   - Login to Your Canvas instance as an admin.
+   - Create LTI Key through: `Admin -> Developer Keys -> +Developer Key -> +LTI Key`
+   - Add Key Settings:
+     - Select `Paste JSON` under `Configure -> Method`. Copy from `lti13-config.json`, making sure to update the below parameters
+       ```json
+       "public_jwk": {
+        "e": "<E>",
+        "n": "<N>",
+        "alg": "<ALG>",
+        "kid": "<KID>",
+        "kty": "<KTY>",
+        "use": "<USE>"
+        }
+       "target_link_uri": "https://<NGROK_HOST>",
+       "oidc_initiation_url": "https://<NGROK_HOST>/api/auth/lti"
+       ```
+     - Update Key Name: `<Your Name> Feedback Key`
+     - Update Redirect URIs: `https://<NGROK_HOST>/api/auth/lti`
+
+4. Update Backend Environment Variables:
+
+   - Copy `backend/dev.env.template` to a new file named `backend/dev.env`
+   - Update variables flagged with `TODO`
+
+5. Update Frontend Environment Variables:
+
+   - Copy `docker-compose.yml.template` to a new file named `docker-compose.yml`
+   - Update variables flagged with `TODO`
+
+6. Build & Run App at the root project level: `docker-compose up`
+
+   - Code changes are automaticaly refreshed in dev mode.
+   - Restarts are only needed when adding new dependencies or updating environment variables
+   - After adding new dependencies, run the following: 1) `docker-compose down` 2) `docker-compose up --build`
+
+7. Install App in Test Course:
+   - Navigate to `Settings -> Apps -> View App Configurations -> +App`
+   - Under configuration type, select `By Client ID` and paste your Developer Key ID
+   - You may need to enable the tool visibility under: `Settings -> Navigation`
 
 
+## Dev Setup (w/o Docker Compose)
 
+1. Follow steps 2-4 from the Dev Setup (Docker Compose) section the same as before.
+
+2. Update Frontend variables
+
+   - Copy `frontend/.env.local.template` to a new file named `frontend/.env.local`
+   - Complete all missing information
+
+3. Build and run app (frontend and backend)
+
+   - Navigate to the location of the `frontend` folder in a terminal. If not done already, make sure the packages have been installed using `npm install`.
+   - Run `npm run dev` to start the application frontend
+   - In another terminal, navigate to the location of the `backend` folder. If not done already, make sure the packages have been installed using `npm install`.
+   - Run `npm run dev` or (`npm run win-dev` if using windows) to start the application backend
+
+4. Install App in Test Course (same steps as Docker compose):
+   - Navigate to `Settings -> Apps -> View App Configurations -> +App`
+   - Under configuration type, select `By Client ID` and paste your Developer Key ID
+   - You may need to enable the tool visibility under: `Settings -> Navigation`

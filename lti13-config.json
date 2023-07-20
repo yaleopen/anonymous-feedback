@@ -1,0 +1,42 @@
+{
+  "title": "Feedback & Accessibility Barriers",
+  "scopes": [],
+  "extensions": [
+    {
+      "tool_id": "feedback-lti",
+      "platform": "canvas.instructure.com",
+      "settings": {
+        "platform": "canvas.instructure.com",
+        "placements": [
+          {
+            "default": "disabled",
+            "enabled": true,
+            "placement": "course_navigation",
+            "message_type": "LtiResourceLinkRequest"
+          }
+        ]
+      },
+      "privacy_level": "public"
+    }
+  ],
+  "public_jwk": {
+    "e": "<E>",
+    "n": "<N>",
+    "alg": "<ALG>",
+    "kid": "<KID>",
+    "kty": "<KTY>",
+    "use": "<USE>"
+  },
+  "description": "Tool for posting anonymous feedback / accessibility barriers",
+  "custom_fields": {
+    "canvas_user_id": "$Canvas.user.id",
+    "canvas_course_id": "$Canvas.course.id",
+    "canvas_term_name": "$Canvas.term.name",
+    "canvas_account_name": "$Canvas.account.name",
+    "canvas_membership_roles": "$Canvas.membership.roles",
+    "canvas_isRootAccountAdmin": "$Canvas.user.isRootAccountAdmin"
+  },
+  "privacy_level": "public",
+  "target_link_uri": "https://<INSTALL_LOCATION>/anon-feedback",
+  "oidc_initiation_url": "https://<INSTALL_LOCATION>/anon-feedback/api/auth/lti"
+}
